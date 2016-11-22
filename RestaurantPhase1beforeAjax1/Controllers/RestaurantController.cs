@@ -34,6 +34,7 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         {
             //create object of menulist
             menuDetailmodel mymodel = new menuDetailmodel();
+
             //add property of restaurant name to object
             string restaurantName = (db.Restaurants.Where(x => x.RestaurantId.Equals(id)).FirstOrDefault().Name);
             mymodel.restuarantName = restaurantName;
@@ -44,7 +45,24 @@ namespace RestaurantPhase1beforeAjax1.Controllers
             var categoryList = db.Categories.Where(x => x.RestaurantId.Equals(id)).ToList();
             mymodel.navBarList = categoryList;
             //pass this object to the model
-            return View(mymodel);
+           
+                ViewBag.message = "Bulding menu,coming soon.....";
+               
+           
+                return View(mymodel);
+            
+        }
+        public PartialViewResult detailOfeachCategory(int restaurantId, int categoryId)
+        {
+            //create object of menulist
+            menuDetailmodel mymodel = new menuDetailmodel();
+            //add property of restaurant name to object
+            string restaurantName = (db.Restaurants.Where(x => x.RestaurantId.Equals(restaurantId)).FirstOrDefault().Name);
+            mymodel.restuarantName = restaurantName;
+            //add property of 2 joined table list to object
+            var list = db.Categories.Join(db.menus, c => c.CategoryId, m => m.CategoryId, (c, m) => new joinModel { category = c, menu = m }).Where(c => c.category.RestaurantId.Equals(restaurantId)&&c.category.CategoryId.Equals(categoryId));
+            mymodel.detailMenu = list.ToList();
+            return PartialView("_productsForeachcategory",mymodel);
         }
     }
 }

@@ -1,0 +1,66 @@
+﻿@using RestaurantPhase1beforeAjax1.Models
+@model menuDetailmodel
+<script src="~/Scripts/menuAjax.js"></script>
+
+<div class="col-md-9">
+
+    <div class="row carousel-holder">
+
+        <div class="col-md-12">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+                <div class="carousel-inner">
+
+                    @for (int i = 0; i < Model.detailMenu.Count(); i++)
+                    {
+                        if (i == 0)
+                        {
+                            <div class="item active">
+                                <img class="slide-image" src="~/assets/@Model.detailMenu[i].category.RestaurantId/@Model.detailMenu[i].menu.foodImage" alt="">
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <img class="slide-image" src="~/assets/@Model.detailMenu[i].category.RestaurantId/@Model.detailMenu[i].menu.foodImage" alt="">
+                            </div>
+                        }
+                    }
+
+                </div>
+                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="row">
+        @foreach (var item in Model.detailMenu)
+        {
+            <div class="col-sm-4 col-lg-4 col-md-4" style="margin-top:20px">
+                <div class="thumbnail" style="height:260px">
+
+                    <img src="~/assets/@item.category.RestaurantId/@item.menu.foodImage" alt="food picture" style="width:320px;height:120px">
+                    <div class="caption">
+                        <h4 class="pull-right">$@item.menu.price</h4>
+                        <h4>
+                            <a href="#">@item.menu.foodName.ToUpper()</a>
+                        </h4>
+                        <p>@item.menu.briefDescription.First().ToString().ToUpper()@item.menu.briefDescription.Substring(1)</p>
+
+                    </div>
+                    <a class="btn btn-primary" style="bottom:30px;right:20px;position:absolute">+<i class="fa fa-cart-plus fa-lg" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

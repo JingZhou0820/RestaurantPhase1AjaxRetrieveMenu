@@ -6,6 +6,10 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+   
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
@@ -35,9 +39,8 @@
         <footer class="col-lg-offset-6">
             <p>&copy; @DateTime.Now.Year - By Jing Zhou</p>
         </footer>
-    
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+   
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
