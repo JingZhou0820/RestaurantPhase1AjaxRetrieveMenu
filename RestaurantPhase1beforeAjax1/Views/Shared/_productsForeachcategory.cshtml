@@ -1,7 +1,7 @@
 ﻿@using RestaurantPhase1beforeAjax1.Models
 @model menuDetailmodel
 <script src="~/Scripts/menuAjax.js"></script>
-
+<link href="~/Content/hoverpicturepartialview.css" rel="stylesheet" />
 <div class="col-md-9">
 
     <div class="row carousel-holder">
@@ -46,12 +46,17 @@
         {
             <div class="col-sm-4 col-lg-4 col-md-4" style="margin-top:20px">
                 <div class="thumbnail" style="height:260px">
-
-                    <img src="~/assets/@item.category.RestaurantId/@item.menu.foodImage" alt="food picture" style="width:320px;height:120px">
+                    <div class="hovereffect" style="height:120px;margin-bottom:20px">
+                    <img class="picture-hover" src="~/assets/@item.category.RestaurantId/@item.menu.foodImage" alt="food picture" style="width:320px;height:120px">
+                    <div class="overlay">
+                        <a href="#" class="info"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
+                    </div>
+                </div> 
+                    
                     <div class="caption">
-                        <h4 class="pull-right">$@item.menu.price</h4>
+                        <h4 class="pull-right" style="margin-top:0px">$@item.menu.price</h4>
                         <h4>
-                            <a href="#">@item.menu.foodName.ToUpper()</a>
+                            <span style="font-size:large;color:darkslateblue">@item.menu.foodName.ToUpper()</span>
                         </h4>
                         <p>@item.menu.briefDescription.First().ToString().ToUpper()@item.menu.briefDescription.Substring(1)</p>
 
