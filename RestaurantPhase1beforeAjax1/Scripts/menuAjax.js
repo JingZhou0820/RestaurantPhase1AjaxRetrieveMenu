@@ -1,4 +1,6 @@
-﻿$('.carousel').carousel();
+﻿/*picture slider*/
+$('.carousel').carousel();
+/*modal using angularJs*/
 $(document).on("click", "#open-ModalDialog", function () {
     var foodName = $(this).data('foodname');
     var foodImage = $(this).data('foodimage');

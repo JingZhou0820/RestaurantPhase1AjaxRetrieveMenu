@@ -8,7 +8,7 @@ namespace RestaurantPhase1beforeAjax1.Models
     public partial class RestaurantContext : DbContext
     {
         public RestaurantContext()
-            : base("name=RestaurantConnectionString")
+            : base("name=RestaurantConnection")
         {
         }
 

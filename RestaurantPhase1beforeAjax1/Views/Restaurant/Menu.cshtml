@@ -14,18 +14,28 @@
 
             <!--Restaurants' category navbar-->
             <div class="col-md-3">
-                <p style="font-size:20px;padding-left:20px">@Model.restuarantName.ToUpper()</p>
-                <div class="list-group">
-                    @foreach (var item in Model.navBarList)
-                    {
-                        @Ajax.ActionLink(item.CategoryName.ToUpper(), "detailOfeachCategory",
+                <div style="color:indigo;padding-left:10px">
+                    <p style="font-size:20px;">@Model.restuarantName.ToUpper()</p>
+                    <p>@Model.restuarantInformation.Area.ToUpper() , @Model.restuarantInformation.City.ToUpper()</p>
+                    <p>@Model.restuarantInformation.Address</p>
+                </div>
+                   <!--Ajax link add to side nav bar-->
+                 <div class="list-group">
+                        @foreach (var item in Model.navBarList)
+                        {
+                            @Ajax.ActionLink(item.CategoryName.ToUpper(), "detailOfeachCategory",
             new { restaurantId = item.RestaurantId, categoryId = item.CategoryId },
             new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "productsContent", InsertionMode = InsertionMode.Replace },
             new { @class = "list-group-item" })
 
-                    }
+                        }
+                    </div>
+                    <!--Google map address-->
+                    <div id="googleMap">
+                        <iframe src="@Model.restuarantInformation.MapURL" width="250" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+                       
                 </div>
-            </div>
+</div>
         
             <!--End category navbar-->
 
@@ -64,6 +74,7 @@
                                 <span class="glyphicon glyphicon-chevron-right"></span>
                             </a>
                         </div>
+                            
                     </div>
 
                 </div>

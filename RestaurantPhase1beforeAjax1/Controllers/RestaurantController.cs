@@ -44,11 +44,9 @@ namespace RestaurantPhase1beforeAjax1.Controllers
             //add category list to navbar property of this object
             var categoryList = db.Categories.Where(x => x.RestaurantId.Equals(id)).ToList();
             mymodel.navBarList = categoryList;
-            //pass this object to the model
-           
-                ViewBag.message = "Bulding menu,coming soon.....";
-               
-           
+            Restaurant restaurantsInfo = db.Restaurants.Where(x => x.RestaurantId.Equals(id)).FirstOrDefault();
+            mymodel.restuarantInformation = restaurantsInfo;
+            //pass this object to the model       
                 return View(mymodel);
             
         }

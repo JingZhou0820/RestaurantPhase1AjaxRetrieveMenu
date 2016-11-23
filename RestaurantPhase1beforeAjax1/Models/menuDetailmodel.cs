@@ -12,5 +12,6 @@ namespace RestaurantPhase1beforeAjax1.Models
         public List<Category> navBarList { get; set; }
         public string restuarantName { get; set; }
         public List<joinModel> detailMenu { get; set; }
+        public Restaurant restuarantInformation { get; set; }
     }
 }

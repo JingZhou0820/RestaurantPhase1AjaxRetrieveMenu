@@ -36,6 +36,10 @@ namespace RestaurantPhase1beforeAjax1.Models
         [Required]
         public string Description { get; set; }
 
+        public string Address { get; set; }
+
+        public string MapURL { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Image1 { get; set; }
