@@ -2,6 +2,7 @@
 @model menuDetailmodel
 <script src="~/Scripts/menuAjax.js"></script>
 <link href="~/Content/hoverpicturepartialview.css" rel="stylesheet" />
+
 <div class="col-md-9">
 
     <div class="row carousel-holder">
@@ -13,7 +14,7 @@
 
                     @for (int i = 0; i < Model.detailMenu.Count(); i++)
                     {
-                        if (i == 0)
+                        if (i == Model.detailMenu.Count()-1)
                         {
                             <div class="item active">
                                 <img class="slide-image" src="~/assets/@Model.detailMenu[i].category.RestaurantId/@Model.detailMenu[i].menu.foodImage" alt="">
@@ -49,7 +50,11 @@
                     <div class="hovereffect" style="height:120px;margin-bottom:20px">
                     <img class="picture-hover" src="~/assets/@item.category.RestaurantId/@item.menu.foodImage" alt="food picture" style="width:320px;height:120px">
                     <div class="overlay">
-                        <a href="#" class="info"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
+                        <a class="info" data-toggle="modal" id="open-ModalDialog"
+                           data-foodname="@item.menu.foodName.ToUpper()" data-foodimage="@item.menu.foodImage"
+                           data-foodprice="@item.menu.price" data-resturantsid="@item.category.RestaurantId"
+                           data-description="@item.menu.briefDescription.First().ToString().ToUpper()@item.menu.briefDescription.Substring(1)"
+                           data-target="#myModal"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
                     </div>
                 </div> 
                     
@@ -68,4 +73,30 @@
 
     </div>
 
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="background-color:rgba(0, 0, 0,0.4)">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color:white;text-align:center"></h4>
+
+            </div>
+            <div class="modal-body" style="color:white;text-align:center">
+                <div class="row">
+                    <img id="imageArea" src="~/assets/1001/1.jpg" style="width:100%;height:100%" />
+                </div>
+                <div class="row">
+                    <h4 id="priceArea">Price: </h4>
+                    <h4 id="descriptionArea">Description: </h4>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="color:white;text-align:center">
+
+                &copy;2016 - By Jing Zhou
+            </div>
+        </div>
+    </div>
 </div>
