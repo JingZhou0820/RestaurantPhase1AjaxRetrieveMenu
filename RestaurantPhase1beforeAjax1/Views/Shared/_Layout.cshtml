@@ -9,7 +9,8 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-   
+
+    <script src="~/Scripts/jquery.easing.1.3.js"></script>
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
@@ -27,7 +28,9 @@
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav navbar-right">
                         <li>@Html.ActionLink("Home", "Index", "Restaurant")</li>
-
+                        <li>
+                            <a class="page-scroll" href="#contact">Contact</a>
+                        </li>
                     </ul>
 
                 </div>
@@ -36,10 +39,12 @@
     
         @RenderBody()
         <hr />
-        <footer >
-            <div class="col-lg-offset-5">
-            <p>&copy; @DateTime.Now.Year - By Jing Zhou -  jzhou125@my.centennialcollege.ca</p>
-            </div>
+        <footer  id="contact" class="contact-section">
+            
+            <p style="text-align:center" >&copy;  @DateTime.Now.Year- By Jing Zhou</p>
+            <p style="text-align:center"><i class="fa fa-envelope-o" aria-hidden="true" style="padding-right:10px"></i>jzhou125@my.centennialcollege.ca</p>
+                <p style="text-align:center"><i class="fa fa-mobile fa-lg" aria-hidden="true"style="padding-right:10px"></i>(416)-529-6150</p>
+            
            
         </footer>
    
