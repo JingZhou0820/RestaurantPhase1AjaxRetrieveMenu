@@ -32,7 +32,7 @@ namespace RestaurantPhase1beforeAjax1.Models
         [Required]
         [StringLength(50)]
         public string Type { get; set; }
-
+       
         [Required]
         public string Description { get; set; }
 
@@ -52,6 +52,9 @@ namespace RestaurantPhase1beforeAjax1.Models
 
         [StringLength(50)]
         public string Image4 { get; set; }
+
+        [StringLength(50)]
+        public string Phone { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Category> Categories { get; set; }

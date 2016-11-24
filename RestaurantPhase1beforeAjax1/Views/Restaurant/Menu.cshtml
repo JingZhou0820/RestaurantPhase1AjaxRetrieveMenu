@@ -14,10 +14,11 @@
 
             <!--Restaurants' category navbar-->
             <div class="col-md-3">
-                <div style="color:indigo;padding-left:10px">
+                <div style="color:darkslategrey;padding-left:10px">
                     <p style="font-size:20px;">@Model.restuarantName.ToUpper()</p>
                     <p>@Model.restuarantInformation.Area.ToUpper() , @Model.restuarantInformation.City.ToUpper()</p>
-                    <p>@Model.restuarantInformation.Address</p>
+                    <p><i class="fa fa-map-marker" aria-hidden="true"style="margin-right:10px"></i>@Model.restuarantInformation.Address</p>
+                    <p><i class="fa fa-phone" aria-hidden="true" style="margin-right:5px"></i>@Model.restuarantInformation.Phone</p>
                 </div>
                    <!--Ajax link add to side nav bar-->
                  <div class="list-group">
