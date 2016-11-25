@@ -22,7 +22,7 @@ namespace RestaurantPhase1beforeAjax1.Controllers
             if (searchby == null || searchby == string.Empty)
             {
                 return View(db.Restaurants.ToList());
-            }
+            } 
 
             else
             {
