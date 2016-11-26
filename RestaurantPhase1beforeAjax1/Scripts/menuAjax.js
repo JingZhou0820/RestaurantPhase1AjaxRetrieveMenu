@@ -12,3 +12,8 @@ $(document).on("click", "#open-ModalDialog", function () {
     $(".modal-body #priceArea").html("Price: $" + foodprice);
     $(".modal-body #descriptionArea").html(description);
 });
+
+
+
+ 
+  
