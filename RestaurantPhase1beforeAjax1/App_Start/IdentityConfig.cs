@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using RestaurantPhase1beforeAjax1.Models;
+using System.Net.Mail;
 
 namespace RestaurantPhase1beforeAjax1
 {
@@ -18,8 +19,24 @@ namespace RestaurantPhase1beforeAjax1
     {
         public Task SendAsync(IdentityMessage message)
         {
+            //email will be sent from this email address
+            var from = "nettesteatyo@gmail.com";
+            var pass = "test@123";
+            //setting up smtp client
+            SmtpClient client = new SmtpClient("Smtp.gmail.com",587);
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new System.Net.NetworkCredential(from, pass);
+            client.EnableSsl = true;
+            //create email
+            var mail = new MailMessage(from, message.Destination);
+            mail.Subject = message.Subject;
+            mail.Body = message.Body;
+            mail.IsBodyHtml = true;
+            //send email
+            return client.SendMailAsync(mail);
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            //return Task.FromResult(0);
         }
     }
 
@@ -54,14 +71,14 @@ namespace RestaurantPhase1beforeAjax1
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
 
             // Configure user lockout defaults
-            manager.UserLockoutEnabledByDefault = true;
+            manager.UserLockoutEnabledByDefault = false;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 

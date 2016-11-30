@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using RestaurantPhase1beforeAjax1.Models;
+using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace RestaurantPhase1beforeAjax1.Controllers
 {
@@ -75,7 +77,7 @@ namespace RestaurantPhase1beforeAjax1.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -139,6 +141,10 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "Individual cusotmer", Value = "individual",Selected=true });
+            items.Add(new SelectListItem { Text = "Restaurant owner", Value = "business" });
+            ViewBag.selectedItem = items;
             return View();
         }
 
@@ -149,27 +155,39 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            using (var context = new ApplicationDbContext())
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
+                    var result = await UserManager.CreateAsync(user, model.Password);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var roleStore = new RoleStore<IdentityRole>(context);
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-                    return RedirectToAction("Index", "Home");
+                    var userStore = new UserStore<ApplicationUser>(context);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+                    userManager.AddToRole(user.Id, model.Role);
+
+                    if (result.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                        return RedirectToAction("Index", "Restaurant");
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
-            }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
+           
         }
 
         //
@@ -202,19 +220,19 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                var user = await UserManager.FindByNameAsync(model.UserName);
+                if (user == null /*|| !(await UserManager.IsEmailConfirmedAsync(user.Id))*/)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                //Send an email with this link
+                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id,userName = user.UserName, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account",new { userEmail=model.Email });
             }
 
             // If we got this far, something failed, redisplay form
@@ -224,8 +242,9 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
-        public ActionResult ForgotPasswordConfirmation()
+        public ActionResult ForgotPasswordConfirmation(string userEmail)
         {
+            ViewBag.email = userEmail;
             return View();
         }
 
@@ -234,6 +253,11 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
+            var username = Request.QueryString["userName"];
+           
+                ViewBag.username = username;
+           
+
             return code == null ? View("Error") : View();
         }
 
@@ -246,9 +270,13 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         {
             if (!ModelState.IsValid)
             {
+                
+                
                 return View(model);
             }
             var user = await UserManager.FindByNameAsync(model.Email);
+           
+
             if (user == null)
             {
                 // Don't reveal that the user does not exist
@@ -392,7 +420,7 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Restaurant");
         }
 
         //
@@ -449,7 +477,7 @@ namespace RestaurantPhase1beforeAjax1.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Restaurant");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

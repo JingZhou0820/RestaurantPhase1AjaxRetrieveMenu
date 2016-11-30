@@ -49,9 +49,9 @@ namespace RestaurantPhase1beforeAjax1.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "User Name")]
+        
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,6 +64,14 @@ namespace RestaurantPhase1beforeAjax1.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -83,7 +91,7 @@ namespace RestaurantPhase1beforeAjax1.Models
 
     public class ResetPasswordViewModel
     {
-        [Required]
+        //[Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -100,13 +108,21 @@ namespace RestaurantPhase1beforeAjax1.Models
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
+        [Required]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
     }
 
     public class ForgotPasswordViewModel
     {
-        [Required]
+        //[Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
+       
     }
 }
