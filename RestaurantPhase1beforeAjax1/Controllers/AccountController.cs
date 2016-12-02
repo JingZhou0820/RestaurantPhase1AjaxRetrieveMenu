@@ -206,9 +206,9 @@ namespace RestaurantPhase1beforeAjax1.Controllers
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
-        public ActionResult ForgotPassword()
-        {
-            return View();
+        public ActionResult ForgotPassword(string found)
+        {        
+                return View();        
         }
 
         //
@@ -224,27 +224,34 @@ namespace RestaurantPhase1beforeAjax1.Controllers
                 if (user == null /*|| !(await UserManager.IsEmailConfirmedAsync(user.Id))*/)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    return View("errorForgotPassword");
                 }
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 //Send an email with this link
-                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id,userName = user.UserName, code = code }, protocol: Request.Url.Scheme);
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, userName = user.UserName, code = code }, protocol: Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                return RedirectToAction("ForgotPasswordConfirmation", "Account",new { userEmail=model.Email });
+                return RedirectToAction("ForgotPasswordConfirmation", "Account", new { userEmail = model.Email });
             }
+            else
+            {
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
         }
 
+        public ActionResult errorForgotPassword()
+        {
+            return View();
+        }
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation(string userEmail)
         {
-            ViewBag.email = userEmail;
+            
             return View();
         }
 
@@ -260,7 +267,7 @@ namespace RestaurantPhase1beforeAjax1.Controllers
 
             return code == null ? View("Error") : View();
         }
-
+     
         //
         // POST: /Account/ResetPassword
         [HttpPost]
@@ -274,7 +281,7 @@ namespace RestaurantPhase1beforeAjax1.Controllers
                 
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByNameAsync(model.UserName);
            
 
             if (user == null)

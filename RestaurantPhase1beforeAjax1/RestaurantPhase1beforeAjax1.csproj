@@ -353,6 +353,7 @@
     <Content Include="assets\pageContent\banner.jpg" />
     <Content Include="assets\pageContent\dessert.jpg" />
     <Content Include="assets\pageContent\image.jpg" />
+    <Content Include="assets\pageContent\loginbackground.jpg" />
     <Content Include="assets\pageContent\meat.jpg" />
     <Content Include="assets\pageContent\meat.png" />
     <Content Include="assets\pageContent\soup.png" />
@@ -372,6 +373,7 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\hoverPictureMenu.css" />
     <Content Include="Content\hoverpicturepartialview.css" />
+    <Content Include="Content\login.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -407,6 +409,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\menuAjax.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\regitsterPage.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -446,6 +449,7 @@
     <Content Include="Views\Restaurant\Menu.cshtml" />
     <Content Include="Views\Shared\_productsForeachcategory.cshtml" />
     <Content Include="Views\Restaurant\_PagedMenuList.cshtml" />
+    <Content Include="Views\Account\errorForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -108,7 +108,7 @@ namespace RestaurantPhase1beforeAjax1.Models
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
-        [Required]
+        
         [Display(Name = "User Name")]
         public string UserName { get; set; }
     }
